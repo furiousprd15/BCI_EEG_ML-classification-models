@@ -12,7 +12,7 @@
 ## Model Architecture:
 1. Importing the evoked MI-EEG data(64 channels, 109 subjects, 160 Hz Fs, 4-sec time window, 4 MI tasks, used the BCI competition IV dataset because of standard reasons )
 2. Preprocessing the high SNR data(nonlinear noise filtering(multiscale principle component analysis (MSPCA)), artefact removal using ICA data extraction, event logging using existing labels)
-3. Optimum channel selection(*still the use of the sparse common spatial pattern (SCSP) for channel selection is in progress*)
+3. Optimum channel selection(*the use of the sparse common spatial pattern (SCSP) for channel selection is still in progress*)
 4. Feature Extraction: Mostly planned on using frequency domain extraction techniques :  discriminative Filter bank CSP (DFB CSB) algorithm
 5. Feature selection(most preferably using metaheuristic optimization algorithms such as PSO, binary coded GA, or differential evolution)
 6. Deep learning Model Training for classification(Coded several simple DL models such as LSTM-based RNNs, Shallow ConvNets, and EEGNet fusion but I am finally planning on using Deep belief networks based on restricted Boltzmann machines for final training because of its nonlinear structure and best accuracy)
