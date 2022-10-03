@@ -21,7 +21,7 @@
 ## Dependencies Required
 * Python 3.7
 * Tensorflow 2.1.0
-* Pywavelets 1.1.1
+* MATLAB 9.10.0
 * SciKit-learn 0.22.1
 * SciPy 1.4.1
 * Numpy 1.18.1
