@@ -17,3 +17,11 @@
 5. Feature selection(most preferably using metaheuristic optimization algorithms such as PSO, binary coded GA, or differential evolution)
 6. Deep learning Model Training for classification(Coded several simple DL models such as LSTM-based RNNs, Shallow ConvNets, and EEGNet fusion but I am finally planning on using Deep belief networks based on restricted Boltzmann machines for final training because of its nonlinear structure and best accuracy)
 7. Validation tests and hyperparameter tuning(tune the learning rate, optimizers, and other model hyperparameters for better accuracy in classification.
+
+## Dependencies Required
+* Python 3.7
+* Tensorflow 2.1.0
+* Pywavelets 1.1.1
+* SciKit-learn 0.22.1
+* SciPy 1.4.1
+* Numpy 1.18.1
