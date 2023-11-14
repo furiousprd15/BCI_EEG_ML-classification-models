@@ -1,5 +1,5 @@
 # Feature Extraction and classification of EEG data based on Motor Imagery using Meta heuristic optimisation techniques and novel Deep learning methods
-![Model Overview](EEG_BCI_overview.png)
+![Model Overview](img1.001.jpeg)
 
 ## BCI_EEG_ML-classification-models
  ConvNETs based ML models for feature extracted 64 channel EEG data
