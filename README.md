@@ -5,18 +5,50 @@
  ConvNETs based ML models for feature extracted 64 channel EEG data
 
 
-## Abstract:
-<p>Brain-computer interface (BCI) is an integrated system that allows people to communicate  and control external devices simply by extracting useful information from the brain signals. Motor imagery classification is an important topic in BCI research that enables the classification of a subject's motor movements thereby facilitating the use of information to implement prosthesis control. The brain dynamics of motor imagery are usually measured by electroencephalography (EEG) as a low signal-to-noise ratio non-stationary time series data. In this project we  present a novel deep learning scheme based on multi-branch 2D convolutional neural network (CNN) that utilises different hyper parameter values for each branch and is more flexible to data from different subjects. Specifically, frequency domain representations of EEG signals processed via fast Fourier transform (FFT) and then feature extracted using optimization techniques is used to train the CNN architecture. These fusion ConvNets are then stacked up with an extra output layer to form a nonlinear multi-layer neural network. The output layer then employs the softmax regression to accomplish the classification task. Also, the conjugate gradient method and back-propagation are used to fine tune the EEGNet along with a more robust off line preprocessing pipeline has been devised to sample the interference and artefact noises and present a more clean EEG data for training the model.The EEG signals are recorded from 64 channels for 109 subjects, while the subject is performing three different MI tasks.
-</p>
+# EEG Motor Imagery Preprocessing Pipeline
 
-## Model Architecture:
-1. Importing the evoked MI-EEG data(64 channels, 109 subjects, 160 Hz Fs, 4-sec time window, 4 MI tasks, used the BCI competition IV dataset because of standard reasons )
-2. Preprocessing the high SNR data(nonlinear noise filtering(multiscale principle component analysis (MSPCA)), artefact removal using ICA data extraction, event logging using existing labels)
-3. Optimum channel selection(*the use of the sparse common spatial pattern (SCSP) for channel selection is still in progress*)
-4. Feature Extraction: Mostly planned on using frequency domain extraction techniques :  discriminative Filter bank CSP (DFB CSB) algorithm
-5. Feature selection(most preferably using metaheuristic optimization algorithms such as PSO, binary coded GA, or differential evolution)
-6. Deep learning Model Training for classification(Coded several simple DL models such as LSTM-based RNNs, Shallow ConvNets, and EEGNet fusion but I am finally planning on using Deep belief networks based on restricted Boltzmann machines for final training because of its nonlinear structure and best accuracy)
-7. Validation tests and hyperparameter tuning(tune the learning rate, optimizers, and other model hyperparameters for better accuracy in classification.
+## 1. Bandpass FIR Filtering
+- **Objective:** Retain EEG signal components within µ (8-12 Hz) and β (16-30 Hz) bands.
+- **Method:** Use a Finite Impulse Response (FIR) bandpass filter with cut-off frequencies at 7 Hz and 32 Hz.
+
+## 2. Epoching
+- **Process:** Segment EEG data into epochs centered around specific events.
+- **Epoch Details:** Starts 0.5 seconds before the event onset and ends 2 seconds post-event.
+
+## 3. Baseline Correction and Normalization
+- **Correction:** Perform baseline correction by subtracting the mean value of the pre-event segment.
+- **Normalization:** Obtain normalized signal \(E_{\text{norm}} = \frac{E - \mu_{\text{baseline}}}{\sigma_{\text{baseline}}}\).
+
+## 4. Resampling
+- **Purpose:** Reduce computational load and focus on the frequency range of interest.
+- **Method:** Downsample from 500 Hz to 250 Hz by selecting every alternate sample.
+
+## 5. Common Spatial Pattern (CSP) Filtering
+- **Application:** Enhance class separability for multiclass tasks in EEG data.
+- **Configuration:** Extract 2 filters per class for a 6-class classification, resulting in 12 filters.
+
+## 6. Continuous Wavelet Transform
+- **Transform:** Process CSP-transformed epochs using the Continuous Wavelet Transform (CWT) with a Complex Morlet wavelet.
+
+## 7. Formation of RGB Images
+- **Creation:** Concatenate sets of three features from CWT output to form an RGB image.
+- **Size and Interpolation:** Reshape and interpolate data to fit the size (3, 224, 224) using bicubic interpolation.
+
+## 8. Model Architecture and Training: MobileNet
+- **Architecture:** Utilize MobileNet for its efficient computation suitable for mobile and embedded vision applications.
+- **Features:** Depthwise and Pointwise Convolution, Batch Normalization, ReLU, Global Average Pooling.
+- **Classification Layer:** Customize the last layer to have six output units for the six classes in the grasp-and-lift task.
+
+## 9. Training Process
+- **Fine-tuning:** Newly added linear layer with the rest of the model layers frozen.
+- **Optimization:** Use Cross-Entropy Loss and the Adam optimizer.
+- **Evaluation:** Monitor model’s accuracy in both training and evaluation phases.
+- **Cross-Validation:** Include a 5-fold CV test-train split for generalizability and robustness.
+
+## 10. Quantization of MobileNet Model to 16-bit Integers
+- **Objective:** Reduce model’s memory footprint while maintaining accuracy.
+- **Steps:** Scaling, Quantization, and Clipping to 16-bit integer range.
+- **Deployment:** Enables deployment on resource-constrained devices for MI decoding tasks.
 
 ## Dependencies Required
 * Python 3.7
